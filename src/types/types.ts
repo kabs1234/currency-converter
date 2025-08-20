@@ -1,12 +1,5 @@
-export type LatestExchangeRateResponse = {
-  data: CurrenciesExchangeRate;
-};
-
-export type HistoricalExchangeRateResponse = {
-  data: Record<string, CurrenciesExchangeRate>;
-};
-
-export type CurrenciesResponse = Record<string, Currency>;
+import type { SelectChangeEvent } from '@mui/material';
+import type { ChangeEvent } from 'react';
 
 export type CurrenciesExchangeRate = Record<string, number>;
 
@@ -19,4 +12,25 @@ export type Currency = {
   code: string;
   name_plural: string;
   type: string;
+};
+
+export type LatestExchangeRateResponse = {
+  data: CurrenciesExchangeRate;
+};
+
+export type HistoricalExchangeRateResponse = {
+  data: Record<string, CurrenciesExchangeRate>;
+};
+
+export type CurrenciesResponse = Record<string, Currency>;
+
+export type CurrencySelectorProps = {
+  currency: string;
+  onCurrencyChange: (evt: SelectChangeEvent) => void;
+  selectorType: 'from' | 'to';
+};
+
+export type AmountFieldProps = {
+  amountValue: number;
+  onAmountChange: (evt: ChangeEvent<HTMLInputElement>) => void;
 };
