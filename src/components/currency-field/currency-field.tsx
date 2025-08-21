@@ -6,7 +6,7 @@ import type {
   CurrencySelectorProps,
 } from '../../types/types';
 
-type CurrencyBoxProps = {
+export type CurrencyFieldProps = {
   amountProperties: AmountFieldProps;
   selectorProperties: CurrencySelectorProps;
 };
@@ -14,7 +14,7 @@ type CurrencyBoxProps = {
 export default function CurrencyField({
   amountProperties,
   selectorProperties,
-}: CurrencyBoxProps): ReactElement {
+}: CurrencyFieldProps): ReactElement {
   return (
     <Box className="flex mb-5 p-2 pb-0 border-1 rounded-xs">
       <TextField
