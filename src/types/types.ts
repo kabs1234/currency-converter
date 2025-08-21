@@ -1,8 +1,6 @@
 import type { SelectChangeEvent } from '@mui/material';
 import type { ChangeEvent } from 'react';
 
-export type CurrenciesExchangeRate = Record<string, number>;
-
 export type Currency = {
   symbol: string;
   name: string;
@@ -13,6 +11,8 @@ export type Currency = {
   name_plural: string;
   type: string;
 };
+
+export type CurrenciesExchangeRate = Record<string, number>;
 
 export type LatestExchangeRateResponse = {
   data: CurrenciesExchangeRate;
