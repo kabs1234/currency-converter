@@ -14,23 +14,24 @@ export type Currency = {
 
 export type CurrenciesExchangeRate = Record<string, number>;
 
+export type Currencies = Record<string, Currency>;
+
 export type LatestExchangeRateResponse = {
   data: CurrenciesExchangeRate;
 };
 
-export type HistoricalExchangeRateResponse = {
-  data: Record<string, CurrenciesExchangeRate>;
+export type CurrenciesResponse = {
+  data: Currencies;
 };
-
-export type CurrenciesResponse = Record<string, Currency>;
 
 export type CurrencySelectorProps = {
   currency: string;
   onCurrencyChange: (evt: SelectChangeEvent) => void;
   selectorType: 'from' | 'to';
+  currenciesList: Currencies;
 };
 
 export type AmountFieldProps = {
-  amountValue: number;
+  amountValue: string;
   onAmountChange: (evt: ChangeEvent<HTMLInputElement>) => void;
 };

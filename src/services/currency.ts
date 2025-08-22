@@ -9,15 +9,14 @@ export const currencyApi = createApi({
   reducerPath: 'currencyApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.freecurrencyapi.com/v1/' }),
   endpoints: (builder) => ({
-    getLatestExchangeRates: builder.query<LatestExchangeRateResponse, string>({
-      query: () => `latest/${API_KEY}`,
+    getLatestExchangeRates: builder.query<LatestExchangeRateResponse, void>({
+      query: () => `latest?apikey=${API_KEY}`,
     }),
-    getCurrencies: builder.query<CurrenciesResponse, string>({
-      query: () => `currencies/${API_KEY}`,
+    getCurrencies: builder.query<CurrenciesResponse, void>({
+      query: () => `currencies?apikey=${API_KEY}`,
     }),
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useGetLatestExchangeRatesQuery } = currencyApi;
+export const { useGetLatestExchangeRatesQuery, useGetCurrenciesQuery } =
+  currencyApi;

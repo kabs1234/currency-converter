@@ -6,6 +6,7 @@ export default function CurrencySelector({
   currency,
   onCurrencyChange,
   selectorType,
+  currenciesList,
 }: CurrencySelectorProps): ReactElement {
   return (
     <FormControl className="w-1/2">
@@ -28,9 +29,9 @@ export default function CurrencySelector({
             },
         }}
       >
-        <MenuItem value="USD">US dollars</MenuItem>
-        <MenuItem value="EUR">Euro</MenuItem>
-        <MenuItem value="RUB">Russian rubles</MenuItem>
+        {Object.entries(currenciesList).map(([code, currency]) => {
+          return <MenuItem value={code}>{currency.name}</MenuItem>;
+        })}
       </Select>
     </FormControl>
   );

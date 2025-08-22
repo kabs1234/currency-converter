@@ -33,6 +33,7 @@ export default function CurrencyField({
         currency={selectorProperties.currency}
         onCurrencyChange={selectorProperties.onCurrencyChange}
         selectorType={selectorProperties.selectorType}
+        currenciesList={selectorProperties.currenciesList}
       />
     </Box>
   );

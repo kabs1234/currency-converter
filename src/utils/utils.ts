@@ -1,9 +1,14 @@
 import type { ChangeEvent } from 'react';
-import type { AmountFieldProps, CurrencySelectorProps } from '../types/types';
+import type {
+  AmountFieldProps,
+  Currencies,
+  CurrencySelectorProps,
+} from '../types/types';
 import type { SelectChangeEvent } from '@mui/material';
+import { NUMBER_REG_EXP } from '../const';
 
 export const createAmountObjectProps = (
-  amountValue: number,
+  amountValue: string,
   onAmountChange: (evt: ChangeEvent<HTMLInputElement>) => void
 ): AmountFieldProps => {
   return {
@@ -15,11 +20,25 @@ export const createAmountObjectProps = (
 export const createCurrencySelectorObjectProps = (
   currency: string,
   onCurrencyChange: (evt: SelectChangeEvent) => void,
-  selectorType: 'from' | 'to'
+  selectorType: 'from' | 'to',
+  currenciesList: Currencies
 ): CurrencySelectorProps => {
   return {
     currency,
     onCurrencyChange,
     selectorType,
+    currenciesList,
   };
+};
+
+export const resetReactStringSetters = (
+  ...setters: React.Dispatch<React.SetStateAction<string>>[]
+): void => {
+  setters.forEach((setter) => {
+    setter('');
+  });
+};
+
+export const isStringNumber = (string: string): boolean => {
+  return NUMBER_REG_EXP.test(string);
 };

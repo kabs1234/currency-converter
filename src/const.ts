@@ -4,3 +4,5 @@ export enum NameSpace {
   Currencies = 'Currencies',
   ConversionsHistory = 'ConversionsHistory',
 }
+
+export const NUMBER_REG_EXP = /^[0-9\b]+$/;
