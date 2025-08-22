@@ -27,7 +27,11 @@ export const convertionsHistorySlice = createSlice({
 
       state.history.push(conversion);
     },
+    clearConversionsHistory(state) {
+      state.history = [];
+    },
   },
 });
 
-export const { recordConversionAction } = convertionsHistorySlice.actions;
+export const { recordConversionAction, clearConversionsHistory } =
+  convertionsHistorySlice.actions;

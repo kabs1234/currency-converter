@@ -7,15 +7,40 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@mui/material';
-import type { ReactElement } from 'react';
-import type { Conversion } from '../../store/conversion-history/conversion-history.slice';
+import { useState, type ReactElement } from 'react';
+import {
+  clearConversionsHistory,
+  type Conversion,
+} from '../../store/conversion-history/conversion-history.slice';
+import { useAppDispatch } from '../../app/hooks';
 
 export default function ConversionsHistory({
   conversionsHistory,
 }: {
   conversionsHistory: Conversion[];
 }): ReactElement {
+  const dispatch = useAppDispatch();
+
+  const [isDialogOpen, setisDialogOpen] = useState<boolean>(false);
+
+  const onOpenDialogButtonClick = () => {
+    setisDialogOpen(true);
+  };
+
+  const onCloseDialogButtonClick = () => {
+    setisDialogOpen(false);
+  };
+
+  const onClearHistoryButtonClick = (): void => {
+    dispatch(clearConversionsHistory());
+  };
+
   if (conversionsHistory.length === 0) {
     return <p>History is empty! Try to make some converions please!</p>;
   }
@@ -28,9 +53,28 @@ export default function ConversionsHistory({
         flexDirection: 'column',
       }}
     >
-      <Button variant="outlined" sx={{ marginBottom: '20px' }}>
+      <Button
+        variant="outlined"
+        sx={{ marginBottom: '10px' }}
+        onClick={onOpenDialogButtonClick}
+      >
         Clear history
       </Button>
+
+      <Dialog open={isDialogOpen} onClose={onCloseDialogButtonClick}>
+        <DialogTitle id="alert-dialog-title">
+          {'Confirm history clear?'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description"></DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClearHistoryButtonClick}>Yes</Button>
+          <Button onClick={onCloseDialogButtonClick} autoFocus>
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <TableContainer component={Paper}>
         <Table aria-label="simple table">

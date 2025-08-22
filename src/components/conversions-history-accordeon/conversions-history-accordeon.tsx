@@ -18,12 +18,12 @@ export default function ConversionsHistoryAccordeon(): ReactElement {
         width: '280px',
         display: 'flex',
         flexDirection: 'column',
-        margin: '20px auto',
+        margin: '20px auto 0',
       }}
     >
       <Button
         variant="outlined"
-        sx={{ marginBottom: '20px' }}
+        sx={{ marginBottom: '10px' }}
         onClick={onOpenHistoryButtonClick}
       >
         Open converions history
