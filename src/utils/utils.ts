@@ -6,6 +6,7 @@ import type {
 } from '../types/types';
 import type { SelectChangeEvent } from '@mui/material';
 import { NUMBER_REG_EXP } from '../const';
+import type { Conversion } from '../store/conversion-history/conversion-history.slice';
 
 export const createAmountObjectProps = (
   amountValue: string,
@@ -41,4 +42,19 @@ export const resetReactStringSetters = (
 
 export const isStringNumber = (string: string): boolean => {
   return NUMBER_REG_EXP.test(string);
+};
+
+export const createConversionObject = (
+  amount: number,
+  from: string,
+  to: string,
+  result: number
+): Conversion => {
+  return {
+    amount,
+    from,
+    to,
+    result,
+    date: new Date().toISOString(),
+  };
 };

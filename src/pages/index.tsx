@@ -5,6 +5,7 @@ import { useEffect, useState, type ReactElement } from 'react';
 import CurrencyField from '../components/currency-field/currency-field';
 import {
   createAmountObjectProps,
+  createConversionObject,
   createCurrencySelectorObjectProps,
   isStringNumber,
   resetReactStringSetters,
@@ -13,6 +14,9 @@ import type {
   CurrenciesResponse,
   LatestExchangeRateResponse,
 } from '../types/types';
+import { useAppDispatch } from '../app/hooks';
+import { recordConversionAction } from '../store/conversion-history/conversion-history.slice';
+import ConversionsHistoryAccordeon from '../components/conversions-history-accordeon/conversions-history-accordeon';
 
 type IndexPageProps = {
   exchangeRates: LatestExchangeRateResponse;
@@ -23,6 +27,8 @@ export default function Index({
   exchangeRates,
   currencies,
 }: IndexPageProps): ReactElement {
+  const dispatch = useAppDispatch();
+
   const [fromCurrency, setFromCurrency] = useState<string>('USD');
   const [fromAmount, setFromAmount] = useState<string>('');
 
@@ -42,10 +48,6 @@ export default function Index({
 
     if (isStringNumber(value)) {
       setFromAmount(value);
-
-      const convertedAmount =
-        (Number(value) * toExchangeRate) / fromExchangeRate;
-      setToAmount(String(convertedAmount));
     }
   };
 
@@ -59,11 +61,6 @@ export default function Index({
 
     if (isStringNumber(value)) {
       setToAmount(value);
-
-      const convertedAmount =
-        (Number(value) * fromExchangeRate) / toExchangeRate;
-
-      setFromAmount(String(convertedAmount));
     }
   };
 
@@ -78,32 +75,71 @@ export default function Index({
   useEffect(() => {
     setFromExchangeRate(exchangeRates.data[fromCurrency]);
     setToExchangeRate(exchangeRates.data[toCurrency]);
-  }, [fromCurrency, toCurrency]);
+  }, [exchangeRates.data, fromCurrency, toCurrency]);
+
+  useEffect(() => {
+    if (isStringNumber(fromAmount)) {
+      const convertedAmount =
+        (Number(fromAmount) * toExchangeRate) / fromExchangeRate;
+
+      setToAmount(String(convertedAmount));
+    }
+  }, [fromAmount, fromExchangeRate, toExchangeRate]);
+
+  useEffect(() => {
+    if (isStringNumber(toAmount)) {
+      const convertedAmount =
+        (Number(toAmount) * fromExchangeRate) / toExchangeRate;
+
+      setFromAmount(String(convertedAmount));
+    }
+  }, [fromExchangeRate, toAmount, toExchangeRate]);
+
+  useEffect(() => {
+    if (fromAmount === '' || toAmount === '') {
+      return;
+    }
+
+    dispatch(
+      recordConversionAction(
+        createConversionObject(
+          Number(fromAmount),
+          fromCurrency,
+          toCurrency,
+          Number(toAmount)
+        )
+      )
+    );
+  }, [fromAmount, toAmount, fromCurrency, toCurrency, dispatch]);
 
   return (
-    <Box className="mt-3 mr-5 ml-5">
-      <CurrencyField
-        amountProperties={createAmountObjectProps(
-          fromAmount,
-          onFromAmountChange
-        )}
-        selectorProperties={createCurrencySelectorObjectProps(
-          fromCurrency,
-          onFromCurrencyChange,
-          'from',
-          currencies.data
-        )}
-      />
+    <>
+      <ConversionsHistoryAccordeon />
 
-      <CurrencyField
-        amountProperties={createAmountObjectProps(toAmount, onToAmountChange)}
-        selectorProperties={createCurrencySelectorObjectProps(
-          toCurrency,
-          onToCurrencyChange,
-          'to',
-          currencies.data
-        )}
-      />
-    </Box>
+      <Box className="mt-3 mr-5 ml-5">
+        <CurrencyField
+          amountProperties={createAmountObjectProps(
+            fromAmount,
+            onFromAmountChange
+          )}
+          selectorProperties={createCurrencySelectorObjectProps(
+            fromCurrency,
+            onFromCurrencyChange,
+            'from',
+            currencies.data
+          )}
+        />
+
+        <CurrencyField
+          amountProperties={createAmountObjectProps(toAmount, onToAmountChange)}
+          selectorProperties={createCurrencySelectorObjectProps(
+            toCurrency,
+            onToCurrencyChange,
+            'to',
+            currencies.data
+          )}
+        />
+      </Box>
+    </>
   );
 }
