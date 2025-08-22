@@ -26,7 +26,7 @@ export default function ConversionsHistoryAccordeon(): ReactElement {
         sx={{ marginBottom: '10px' }}
         onClick={onOpenHistoryButtonClick}
       >
-        Open converions history
+        {isHistoryOpen ? 'Close converions history' : 'Open converions history'}
       </Button>
 
       {isHistoryOpen && (
